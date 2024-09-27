@@ -1,7 +1,6 @@
 const path = require('path');
-const TradeService = require('../Services/trade.service');
-const tradeServiceInstance = new TradeService();
- // Import the TradeService class
+const TradeService = require('../Services/trade.service'); // importing TradeService class
+const tradeServiceInstance = new TradeService(); // creating instance of TradeService class
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const { time } = require('console');
@@ -10,13 +9,13 @@ const postTrade = async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
-
+       // getting the file from upload directory
   const filePath = path.join(__dirname, '../uploads', req.file.filename);
-  const results = [];
-
+  const results = [];  // for storing the data 
+// now we have to parse the csv file
   fs.createReadStream(filePath)
     .pipe(csvParser())
-    .on('data', (data) => results.push(data))
+    .on('data', (data) => results.push(data)) // push each row of file
     .on('end', async () => {
       try {
         for (const row of results) {
@@ -49,14 +48,14 @@ const postTrade = async (req, res) => {
 };
 
 
-
+// this is method is used for calculating the balance calculations
 const calucateBalance=(data)=>{
 
     console.log('in the cal balance method ')
-  // Object to hold the asset balances
+  // Object to hold the  balances data
   const balances = {};
 
-  // Calculate the balance for each asset (baseCoin)
+  // Calculate the balance for each  baseCoin
   data.forEach(trade => {
       const { baseCoin, operation, amount } = trade;
 
